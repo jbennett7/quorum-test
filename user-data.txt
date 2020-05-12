@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#amazon-linux-extras -y install java-openjdk11
+#git clone https://github.com/jpmorganchase/quorum.git
+#cd quorum
+#make all
+#mkdir -p ./build_root /opt/quorum/{bin,etc,usr,var}
+#mv build/bin/* /opt/quorum/bin
+#chown -R quorum:quorum /opt/quorum
+#wget https://oss.sonatype.org/service/local/repositories/releases/content/com/jpmorgan/quorum/tessera-app/0.10.5/tessera-app-0.10.5-app.jar
+
+
+yum -y update
+yum -y install git docker go
+yum -y erase python2-requests
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+useradd quorum
+usermod -a -G docker quorum
+systemctl enable docker
+systemctl start docker
+runuser -u quorum pip install docker-compose
+mkdir /home/quorum/quorum-examples
+git clone https://github.com/jpmorganchase/quorum-examples /home/quorum/quorum-examples
+#git clone https://github.com/jpmorganchase/quorum.git /home/quorum/quorum
+#cd /home/quorum/quorum
+#make all
+#mv /home/quorum/quorum/build/bin/* /home/quorum/.local/bin
+chown -R quorum:quorum /home/quorum
+#cd /home/quorum/quorum-examples
+#runuser -u quorum -c 'docker-compose up -d'
